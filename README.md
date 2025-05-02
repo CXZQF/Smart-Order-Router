@@ -37,6 +37,8 @@ The parameter search employs a two-phase approach:
 
 The search leverages multiprocessing to parallelize parameter evaluations, significantly reducing runtime while maintaining solution quality.
 
+
+
 ## Suggested Improvement: Realistic Queue Position Modeling
 
 The current implementation assumes that allocated limit orders up to the displayed size are filled instantly at the ask price. A significant improvement would be to model the queue position of the simulated order:
@@ -48,3 +50,42 @@ The current implementation assumes that allocated limit orders up to the display
 3. **Implementation Approach**: This would require tracking a more detailed state of each order and refining the fill simulation logic to account for partial fills at various queue positions. The order outflow model would need to be updated to include queue position information.
 
 This enhancement would more accurately reflect real-world execution behavior, particularly in conditions where queue positioning greatly affects fill probability, and would likely improve the performance of the already cost-effective router.
+
+
+
+
+## Output Format
+
+The script prints a single JSON object to standard output upon completion. 
+```json
+{
+  "best_parameters": {
+    "lambda_over": 0.0554771892225554,
+    "lambda_under": 0.09696509114785437,
+    "theta_queue": 0.0030412833049502526
+  },
+  "allocator": {
+    "cash_spent": 1113700.0,
+    "avg_price": 222.74
+  },
+  "baselines": {
+    "best_ask": {
+      "cash_spent": 1114102.2800000003,
+      "avg_price": 222.82045600000006
+    },
+    "twap": {
+      "cash_spent": 1115250.0299999998,
+      "avg_price": 223.05000599999997
+    },
+    "vwap": {
+      "cash_spent": 1114102.2800000003,
+      "avg_price": 222.82045600000006
+    }
+  },
+  "savings_bp": {
+    "vs_best_ask": 3.610799539879539,
+    "vs_twap": 13.89849772072899,
+    "vs_vwap": 3.610799539879539
+  }
+}
+
